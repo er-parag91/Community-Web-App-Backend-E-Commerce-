@@ -1,12 +1,25 @@
-const Sequelize = require('sequelize').Sequelize;
+const MongoClient = require('mongodb').MongoClient;
 
-const sequelize = new Sequelize(
-  'express-app',
-  'root',
-  'mypass123', {
-    dialect: 'mysql',
-    host: 'localhost'
-  });
+let _db;
+const mongoConnect = callback => {
+  MongoClient.connect(process.env.MONGO_DB_CONNECTION, { useUnifiedTopology: true }).then(client => {
+    console.log('connected');
+    _db = client.db();
+    callback();
+  }).catch(err => {
+    console.log(err);
+    throw err;
+  })
+}
 
-  module.exports = sequelize;
-  
+const getDb = () => {
+  if (_db) {
+    return _db;
+  }
+  throw 'No database found!!';
+}
+
+module.exports = {
+  mongoConnect,
+  getDb,
+}
