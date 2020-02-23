@@ -53,64 +53,9 @@ userSchema.methods.deleteCartItem = function(cartProductId) {
     return this.save()
 }
 
+userSchema.methods.clearCart = function() {
+  this.cart = { items: [] };
+  return this.save();
+}
+
 module.exports = mongoose.model('User', userSchema);
-
-//   createOrder() {
-//     const db = getDb();
-//     return this.getCart().then(products => {
-//         const order = {
-//           items: products,
-//           user: {
-//             _id: ObjectId(this._id),
-//             name: this.name
-//           }
-//         }
-//         return db.collection('shopOrders').insertOne(order)
-//       }).then(() => {
-//         return db.collection('users').updateOne({
-//           _id: ObjectId(this._id)
-//         }, {
-//           $set: {
-//             cart: {
-//               items: []
-//             }
-//           }
-//         })
-//       })
-//       .then(result => {
-//         return result;
-//       })
-//       .catch(err => {
-//         console.log(err);
-//       });
-//   }
-
-//   getOrders() {
-//     const db = getDb();
-//     return db.collection('shopOrders').find({
-//         'user._id': ObjectId(this._id)
-//       })
-//       .toArray()
-//       .then((result => {
-//         return result;
-//       }))
-//       .catch(err => {
-//         console.log(err);
-//       });
-//   }
-
-//   static findById(id) {
-//     const db = getDb();
-//     return db.collection('users').findOne({
-//         _id: ObjectId(id)
-//       })
-//       .then(users => {
-//         return users;
-//       })
-//       .catch(err => {
-//         console.log(err);
-//       })
-//   }
-// }
-
-// module.exports = User;
