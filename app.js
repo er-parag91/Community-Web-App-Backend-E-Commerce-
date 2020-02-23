@@ -1,12 +1,11 @@
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
-// dummy user class 
+//User model 
 const User = require('./models/user');
 
-// database
-const { mongoConnect } = require('./util/database');
 
 // Controllers import
 const errorController = require('./controllers/error');
@@ -28,28 +27,28 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// middleware and routes 
-
+// middleware and routes
 app.use((req, res, next) => {
-  User.findById('5e4ace8b7249bf33ac0f6cba').then(user => {
-    req.user = new User(user.name, user.email, user.cart, user._id);
-    next();
-  }).catch(err => {
-    console.log(err)
-  });
-});
-app.use('/admin', adminRoutes);
-app.use(shopRoutes);
-app.use(errorController.get404);
-
-mongoConnect(() => {
-  const user = new User('Parag', 'test@test.com');
-  user
-    .save()
-    .then(() => {
-      app.listen(3000);
+  User.findById('5e52ae87ae1849191b8b54c8')
+    .then(user => {
+      req.user = user;
+      next()
     })
     .catch(err => {
       console.log(err);
     })
-})
+}) 
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+app.use(errorController.get404);
+
+mongoose.connect(process.env.MONGO_DB_CONNECTION, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+  })
+  .then(() => {
+    app.listen(3000);
+  })
+  .catch((err) => {
+    console.log(err);
+  })
