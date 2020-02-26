@@ -3,6 +3,8 @@
 
 <body>
     <%- include('includes/navigation.ejs') %>
+    <!-- CSRF token input hidden -->
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
     <h1>Page Not Found!</h1>
 
-<%- include('includes/end.ejs') %>
+    <%- include('includes/end.ejs') %>

@@ -7,7 +7,7 @@ exports.getProducts = (req, res, next) => {
       res.render('shop/product-list', {
         prods: products,
         pageTitle: 'All Products',
-        path: '/products'
+        path: '/products',
       });
     })
     .catch(err => {
@@ -22,7 +22,7 @@ exports.getProduct = (req, res, next) => {
       res.render('shop/product-detail', {
         product: product,
         pageTitle: product.title,
-        path: '/products'
+        path: '/products',
       });
     }).catch(err => {
       console.log(err);
@@ -35,7 +35,7 @@ exports.getIndex = (req, res, next) => {
       res.render('shop/product-list', {
         prods: products,
         pageTitle: 'Shop',
-        path: '/'
+        path: '/',
       });
     })
     .catch(err => {
@@ -45,15 +45,14 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
   req.user
-    .populate('cart.items.productId')
+    .populate('cart.items.product')
     .execPopulate()
     .then(user => {
       const products = user.cart.items;
-      console.log(products)
       res.render('shop/cart', {
         path: '/cart',
         pageTitle: 'Your Cart',
-        products: products
+        products: products,
       })
     })
     .catch(err => {
@@ -91,7 +90,7 @@ exports.getOrders = (req, res, next) => {
       res.render('shop/orders', {
         path: '/orders',
         pageTitle: 'Your Orders',
-        orders: orders
+        orders: orders,
       });
     })
     .catch(err => {
@@ -101,29 +100,30 @@ exports.getOrders = (req, res, next) => {
 
 exports.postOrder = (req, res, next) => {
   req.user
-    .populate('cart.items.productId')
+    .populate('cart.items.product')
     .execPopulate()
     .then(user => {
       let orderTotal = 0;
       const products = user.cart.items.map(item => {
-        orderTotal += item.quantity * item.productId.price;
+        orderTotal += Number((item.quantity * item.product.price).toFixed(2));
         return {
           quantity: item.quantity,
           product: {
-            ...item.productId._doc
+            ...item.product._doc
           }
         }
       });
-      console.log(orderTotal)
-      const order = new Order({
-        products: products,
-        user: {
-          name: req.user.name,
-          userId: req.user
-        },
-        total: orderTotal,
-      });
-      return order.save()
+      if (products.length) {
+        const order = new Order({
+          products: products,
+          user: {
+            email: req.user.email,
+            userId: req.user
+          },
+          total: Number(orderTotal.toFixed(2)),
+        });
+        return order.save()
+      }
     })
     .then((result) => {
       return req.user.clearCart()

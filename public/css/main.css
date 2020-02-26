@@ -42,8 +42,10 @@ form {
 
 .main-header__nav {
   height: 100%;
+  width: 100%;
   display: none;
   align-items: center;
+  justify-content: space-between;
 }
 
 .main-header__item-list {
@@ -58,14 +60,23 @@ form {
   padding: 0;
 }
 
-.main-header__item a {
+.main-header__item a,
+.main-header__item button {
+  font: inherit;
   text-decoration: none;
   color: white;
+  background: transparent;
+  outline: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .main-header__item a:hover,
 .main-header__item a:active,
-.main-header__item a.active {
+.main-header__item a.active,
+.mobile-nav__item button:active,
+.mobile-nav__item button:hover {
   color: #ffeb3b;
 }
 
@@ -100,16 +111,23 @@ form {
   padding: 0;
 }
 
-.mobile-nav__item a {
+.mobile-nav__item a,
+.mobile-nav__item button {
+  font: inherit;
   text-decoration: none;
   color: black;
   font-size: 1.5rem;
   padding: 0.5rem 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .mobile-nav__item a:active,
 .mobile-nav__item a:hover,
-.mobile-nav__item a.active {
+.mobile-nav__item a.active,
+.mobile-nav__item button:active,
+.mobile-nav__item button:hover {
   background: #00695c;
   color: white;
   border-radius: 3px;
@@ -216,6 +234,21 @@ form {
   color: white;
 }
 
+.user-message {
+  margin: auto;
+  padding: 0.8rem;
+  width: 100%;
+  border: 1px solid #4771fa;
+  border-radius: 3px;
+  background-color: #b9c9ff;
+}
+
+.user-message--error {
+  border: 1px solid #f83434;
+  background-color: #fa5b5b48;
+  color: #fa2727;
+}
+
 @media (min-width: 768px) {
   .main-header__nav {
     display: flex;
@@ -223,5 +256,10 @@ form {
 
   #side-menu-toggle {
     display: none;
+  }
+
+  .user-message {
+    padding: 0.7rem;
+    width: 100%;
   }
 }
