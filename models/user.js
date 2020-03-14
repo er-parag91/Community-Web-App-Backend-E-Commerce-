@@ -7,14 +7,16 @@ const userSchema = new Schema({
     type: String,
     required: true,
     trim: true,
+    unique: true,
+    lowercase: true,
   },
   password: {
     type: String,
     required: true,
     trim: true,
-    minlength: 6,
-    maxlength: 12
   },
+  resetToken: String,
+  resetExpiration: Date,
   cart: {
     items: [{
       product: {
