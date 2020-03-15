@@ -48,7 +48,6 @@ exports.postLogin = (req, res, next) => {
             req.session.isLoggedIn = true;
             req.session.user = user;
             return req.session.save((err) => {
-              console.log(err);
               res.redirect('/')
             });
           }
@@ -111,7 +110,6 @@ exports.postSignup = (req, res, next) => {
       res.redirect('/login');
     })
     .catch(err => {
-      console.log(err)
       if (err.code === 11000) {
         req.flash('error', 'Email already exists!!');
       } else {
@@ -132,7 +130,6 @@ exports.postSignup = (req, res, next) => {
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy(err => {
-    console.log(err);
     res.redirect('/')
   })
 };

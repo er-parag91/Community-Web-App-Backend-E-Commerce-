@@ -28,7 +28,7 @@ const fileStorage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  if (['image/jpeg', 'image/jpg'].includes(file.mimetype)) {
+  if (['image/jpeg', 'image/jpg', 'image/png'].includes(file.mimetype)) {
     cb(null, true);
   } else {
     cb(null, false);
@@ -56,6 +56,8 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(multer({ storage: fileStorage, fileFilter }).single('image'))
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -110,7 +112,4 @@ mongoose.connect(process.env.MONGO_DB_CONNECTION, {
   })
   .then(() => {
     app.listen(process.env.PORT);
-  })
-  .catch((err) => {
-    console.log(err);
   })
