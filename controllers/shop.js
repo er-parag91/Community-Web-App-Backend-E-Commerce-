@@ -101,7 +101,7 @@ exports.getCart = (req, res, next) => {
         path: '/cart',
         pageTitle: 'Your Cart',
         products: products,
-        cartTotal,
+        cartTotal: cartTotal.toFixed(2),
       })
     })
     .catch(err => {
@@ -251,7 +251,7 @@ exports.getCheckout = (req, res, next) => {
         path: '/checkout',
         pageTitle: 'Checkout',
         products: products,
-        orderTotal,
+        orderTotal: orderTotal.toFixed(2),
         sessionId: session.id
       })
     })
